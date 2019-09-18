@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>EWYL Challenge 2</title>
+</head>
+<script>
+    let interval = null;
+
+    function onSubmit() {
+        clearInterval(interval);
+        const busNumber = document.getElementById('number').value;
+        fetch('/api/bus/'+busNumber)
+            .then(resp => resp.json())
+            .then(resp => {
+                if(resp.success===false) alert('Invalid bus number');
+                else {
+                    const lat = resp.latitude;
+                    const lng = resp.longitude;
+                    const place = resp.place;
+                    const speed = resp.speed;
+                    const moving = speed===0?false:true;
+                    document.getElementById('location').innerHTML = lat+', '+lng;
+                    document.getElementById('place').innerHTML = place;
+                    document.getElementById('speed').innerHTML = speed;
+                    document.getElementById('moving').innerHTML = moving;
+                }
+            }).catch(err => alert('Error: '+err));
+        interval = setInterval(()=> {
+            alert('Refreshing');
+            fetch('/api/bus/'+busNumber)
+                .then(resp => resp.json())
+                .then(resp => {
+                    if(resp.success===false) alert('Invalid bus number');
+                    else {
+                        const lat = resp.latitude;
+                        const lng = resp.longitude;
+                        const place = resp.place;
+                        const speed = resp.speed;
+                        const moving = speed===0?false:true;
+                        document.getElementById('location').innerHTML = lat+', '+lng;
+                        document.getElementById('place').innerHTML = place;
+                        document.getElementById('speed').innerHTML = speed;
+                        document.getElementById('moving').innerHTML = moving;
+                    }
+                }).catch(err => alert('Error: '+err));
+        }, 5000);
+    }
+</script>
+<body>
+    <input type="text" id="number" placeholder="Bus number"/>
+    <input type="submit" id="submit" value="Submit" onclick="onSubmit()">
+    <main>
+        <br />
+        <b>Location</b>: <span id="location">null</span><br />
+        <b>Place</b>: <span id="place">null</span><br />
+        <b>Speed</b>: <span id="speed">null</span><br />
+        <b>Moving</b>: <span id="moving">null</span><br />
+    </main>
+</body>
+</html>
