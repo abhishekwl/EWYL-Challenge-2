@@ -1,5 +1,7 @@
 # EWYL: Challenge-2
 
+Web App link: https://ewyl-app.herokuapp.com
+
 ## Installation
 ```
 pip install -r requirements.txt
@@ -14,6 +16,9 @@ EXAMPLE: python3 cmd.py 1
 ```
 
 ### Web app
+Web app link: https://ewyl-app.herokuapp.com
+
+Locally:
 ```
 python3 server.py
 ```
